@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+
+    <h3>Login Page</h3>
+    @ViewBag.error
+    <form method="post" asp-controller="home" asp-action="login">
+        <table border="0" cellpadding="2" cellspacing="2">
+            <tr>
+                <td>Username</td>
+                <td><input type="text" name="username"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" value="Login"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><button asp-action="register" asp-controller="account" style="background: none; border: none;">new User?</button></td>
+            </tr>            
+        </table>
+    </form>
+    
+
+</body>
+</html>

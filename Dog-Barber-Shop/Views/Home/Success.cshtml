@@ -1,0 +1,162 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model QueueViewModel.SomeViewModel
+
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+
+    <script type="text/javascript">
+        $(function () {
+            $("body").on('click', '#btnEdit', function () {
+                debugger;
+                $("#MyPopup").modal("hide");
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url: 'CustomerDetails',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: { id: id },
+                    success: function (response) {
+                        var name = JSON.parse(response).customerName;
+                        var queueTime = JSON.parse(response).queueTime;
+                        var creationQueueTime = JSON.parse(response).creationQueueTime;
+                        $('#txtName').val(name);
+                        $('#txtqueueTime').val(queueTime);
+                        $('#txtcreationTime').val(creationQueueTime);
+                        $("#MyPopup").modal("show");
+                    },
+                });
+            });
+        });
+    </script>
+    <title>Success</title>
+</head>
+<body>
+
+    <h3>Success Page</h3>
+    Welcome @Context.Session.GetString("username")
+    <br>
+    <input type="text" id="myInput" onkeyup="filterName()" placeholder="Search for names.." title="Type in a name">
+    <br />
+    <input type="text" id="myInputDate" onkeyup="filterDate()" placeholder="Search for dates.." title="Type in a date">
+
+    <div class="table">
+        <table id="myTable" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    Customer Name
+                </tr>
+                <tr>
+                    Queue Time
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    @foreach (var Data in Model.samples)
+                    {
+                        <tr>
+                            <td class="dialog" data-toggle="modal" data-target="#exampleModal">
+                                @Data.customerName
+                            </td>
+                            <td class="dialog" data-toggle="modal" data-target="#exampleModal">
+                                @Data.queueTime
+                            </td>
+                            <td>
+                                <button type="button" id="btnEdit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#MyPopup" data-id="@Data.customerID">Details</button>
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@Data.customerName">Edit</a> |
+                                <a asp-action="Delete" asp-route-id="@Data.customerName">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal Popup -->
+    <div id="MyPopup" class="modal fade" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Customer Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form asp-action="Create" asp-controller="Home">
+                                    @*<div class="form-group">
+                                            Id:<input id="txtId" class="form-control" readonly="readonly" />
+                                        </div>*@
+                                    <div class="form-group">
+                                        Name:<input id="txtName" readonly="readonly" />
+                                    </div>
+                                    <div class="form-group">
+                                        Queue time:<input id="txtqueueTime" readonly="readonly" />
+                                    </div>
+                                    <div class="form-group">
+                                        Creation Queue Time:<input id="txtcreationTime" readonly="readonly" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnClosePopup" value="Close" data-dismiss="modal" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <a asp-controller="home" asp-action="logout">Logout</a>
+    <script>
+        function filterName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function filterDate() {
+            debugger;
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInputDate");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+
+    </script>
+    
+</body>
+</html>

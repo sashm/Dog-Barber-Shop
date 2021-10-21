@@ -1,0 +1,47 @@
+﻿@model registerViewModel
+
+@{
+    ViewData["Title"] = "User Registration";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+   
+</head>
+<body>
+
+    <h3>Register Page</h3>
+    @ViewBag.error
+<form method="post" asp-controller="home" asp-action="register">
+    <div asp-validation-summary="All"></div>
+    <div>
+        <label asp-for="Username"></label>
+        <input asp-for="Username" />
+        <span asp-validation-for="Username"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <button type="submit">Register</button>
+       
+</form>
+
+
+</body>
+</html>
+
+
